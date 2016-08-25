@@ -67,8 +67,8 @@ function build_build_var_cache()
 {
     local T=$(gettop)
     # Grep out the variable names from the script.
-    cached_vars=(`cat $T/build/envsetup.sh $T/vendor/yaap/build/envsetup.sh | tr '()' '  ' | awk '{for(i=1;i<=NF;i++) if($i~/_get_build_var_cached/) print $(i+1)}' | sort -u | tr '\n' ' '`)
-    cached_abs_vars=(`cat $T/build/envsetup.sh $T/vendor/yaap/build/envsetup.sh | tr '()' '  ' | awk '{for(i=1;i<=NF;i++) if($i~/_get_abs_build_var_cached/) print $(i+1)}' | sort -u | tr '\n' ' '`)
+    cached_vars=(`cat $T/build/envsetup.sh $T/vendor/alpha/build/envsetup.sh | tr '()' '  ' | awk '{for(i=1;i<=NF;i++) if($i~/_get_build_var_cached/) print $(i+1)}' | sort -u | tr '\n' ' '`)
+    cached_abs_vars=(`cat $T/build/envsetup.sh $T/vendor/alpha/build/envsetup.sh | tr '()' '  ' | awk '{for(i=1;i<=NF;i++) if($i~/_get_abs_build_var_cached/) print $(i+1)}' | sort -u | tr '\n' ' '`)
     # Call the build system to dump the "<val>=<value>" pairs as a shell script.
     build_dicts_script=`\builtin cd $T; build/soong/soong_ui.bash --dumpvars-mode \
                         --vars="${cached_vars[*]}" \
@@ -526,8 +526,8 @@ function lunch()
         export TARGET_RELEASE=$release
     fi
 
-    if (echo -n $1 | grep -q -e "^yaap_") ; then
-      YAAP_BUILD=$(echo -n $product | sed -e 's/^yaap_//g')
+    if (echo -n $1 | grep -q -e "^alpha_") ; then
+      YAAP_BUILD=$(echo -n $product | sed -e 's/^alpha_//g')
     else
       YAAP_BUILD=
     fi
@@ -541,7 +541,7 @@ function lunch()
     fi
 
     cd $T > /dev/null
-    vendor/yaap/build/tools/roomservice.py $product $depsOnly
+    vendor/alpha/build/tools/roomservice.py $product $depsOnly
     cd - > /dev/null
 
     _lunch_meat $product $release $variant
@@ -1228,4 +1228,4 @@ set_global_paths
 source_vendorsetup
 addcompletions
 
-. $T/vendor/yaap/build/envsetup.sh
+. $T/vendor/alpha/build/envsetup.sh
