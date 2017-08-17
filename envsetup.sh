@@ -527,16 +527,16 @@ function lunch()
     fi
 
     if (echo -n $1 | grep -q -e "^alpha_") ; then
-      YAAP_BUILD=$(echo -n $product | sed -e 's/^alpha_//g')
+      ALPHA_BUILD=$(echo -n $product | sed -e 's/^alpha_//g')
     else
-      YAAP_BUILD=
+      ALPHA_BUILD=
     fi
-    export YAAP_BUILD
-    YAAP_DEVICE=$YAAP_BUILD
-    export YAAP_DEVICE
+    export ALPHA_BUILD
+    ALPHA_DEVICE=$ALPHA_BUILD
+    export ALPHA_DEVICE
 
     local depsOnly=""
-    if [[ $(find ./device -type d -name "$YAAP_DEVICE" -print -quit) != "" ]]; then
+    if [[ $(find ./device -type d -name "$ALPHA_DEVICE" -print -quit) != "" ]]; then
         depsOnly="true"
     fi
 
