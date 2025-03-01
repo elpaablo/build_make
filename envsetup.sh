@@ -482,11 +482,18 @@ function lunch()
 
     export TARGET_BUILD_APPS=
 
-    # This must be <product>-<release>-<variant>
+    # This must be <product>-[<release>]-<variant>
     local product release variant
     # Split string on the '-' character.
     IFS="-" read -r product release variant <<< "$selection"
 
+    if [[ -z "$variant" ]]
+    then
+        # try to lunch with latest release
+        variant=$release
+        # from https://github.com/yaap/build_make/blob/c7753b7616c75f020cd1bdb04fda05625d2649cc/envsetup.sh#L523
+        release=$(grep "BUILD_ID" build/make/core/build_id.mk | tail -1 | cut -d '=' -f 2 | cut -d '.' -f 1 | tr '[:upper:]' '[:lower:]')
+    fi
     if [[ -z "$product" ]] || [[ -z "$release" ]] || [[ -z "$variant" ]]
     then
         echo
