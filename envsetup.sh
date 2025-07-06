@@ -98,8 +98,8 @@ function build_build_var_cache()
 {
     local T=$(gettop)
     # Grep out the variable names from the script.
-    cached_vars=(`cat $T/build/envsetup.sh $T/vendor/yaap/build/envsetup.sh | tr '()' '  ' | awk '{for(i=1;i<=NF;i++) if($i~/_get_build_var_cached/) print $(i+1)}' | sort -u | tr '\n' ' '`)
-    cached_abs_vars=(`cat $T/build/envsetup.sh $T/vendor/yaap/build/envsetup.sh | tr '()' '  ' | awk '{for(i=1;i<=NF;i++) if($i~/_get_abs_build_var_cached/) print $(i+1)}' | sort -u | tr '\n' ' '`)
+    cached_vars=(`cat $T/build/envsetup.sh $T/vendor/alpha/build/envsetup.sh | tr '()' '  ' | awk '{for(i=1;i<=NF;i++) if($i~/_get_build_var_cached/) print $(i+1)}' | sort -u | tr '\n' ' '`)
+    cached_abs_vars=(`cat $T/build/envsetup.sh $T/vendor/alpha/build/envsetup.sh | tr '()' '  ' | awk '{for(i=1;i<=NF;i++) if($i~/_get_abs_build_var_cached/) print $(i+1)}' | sort -u | tr '\n' ' '`)
     # Call the build system to dump the "<val>=<value>" pairs as a shell script.
     build_dicts_script=`\builtin cd $T; build/soong/soong_ui.bash --dumpvars-mode \
                         --vars="${cached_vars[*]}" \
@@ -638,22 +638,22 @@ function lunch()
         echo "to choose a different release use the form <product>-<release>-<variant>"
     fi
 
-    if (echo -n $1 | grep -q -e "^yaap_") ; then
-      YAAP_BUILD=$(echo -n $product | sed -e 's/^yaap_//g')
+    if (echo -n $1 | grep -q -e "^alpha_") ; then
+      ALPHA_BUILD=$(echo -n $product | sed -e 's/^alpha_//g')
     else
-      YAAP_BUILD=
+      ALPHA_BUILD=
     fi
-    export YAAP_BUILD
-    YAAP_DEVICE=$YAAP_BUILD
-    export YAAP_DEVICE
+    export ALPHA_BUILD
+    ALPHA_DEVICE=$ALPHA_BUILD
+    export ALPHA_DEVICE
 
     local depsOnly=""
-    if [[ $(find ./device -type d -name "$YAAP_DEVICE" -print -quit) != "" ]]; then
+    if [[ $(find ./device -type d -name "$ALPHA_DEVICE" -print -quit) != "" ]]; then
         depsOnly="true"
     fi
 
     cd $T > /dev/null
-    vendor/yaap/build/tools/roomservice.py $product $depsOnly
+    vendor/alpha/build/tools/roomservice.py $product $depsOnly
     cd - > /dev/null
 
     # Validate the selection and set all the environment stuff
@@ -1201,4 +1201,4 @@ set_global_paths
 source_vendorsetup
 addcompletions
 
-. $T/vendor/yaap/build/envsetup.sh
+. $T/vendor/alpha/build/envsetup.sh
